@@ -1,0 +1,37 @@
+## 关于埋点在页面切换的时候丢失的解决方式
+
+查询了网上的方式，基本是两种
+1. 异步 -> 同步
+2. 将参数放到下一个页面，由下一个页面来发送
+---
+
+两种方式都不是很喜欢，所以借鉴react，或者说js中很流行的事件循环的方式
+简单实现一个queue的方式来实现异步发送，只要创建一个trackAsync的方式，挂载到全局即可
+```js
+//queue的元素类型应该是 funcion,aruguments,this，length 为3
+function doJobs(queue) {
+    if("[object Array]" !== Object.prototype.toString.call(queue)) {
+        throw new Error(queue + 'is not a array');
+    }
+    if(queue.length === 0) {
+        return
+    }
+    console.log(queue[0])
+    while(queue.length) {
+        let content = queue.shift() 
+        if('function' !== typeof content[0]){
+            throw new Error(`${content}不是函数`);
+        }
+        content[0].apply(content[2],content[1])
+    }
+}
+
+let queue = []
+let intervalTag = setInterval(function() {
+    doJobs(queue)
+},1000)
+
+export { queue }
+
+
+```
