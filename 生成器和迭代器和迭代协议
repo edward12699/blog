@@ -1,0 +1,63 @@
+## generator
+generator是一个函数，函数形式是::function*,内部有yield::
+返回值能够用next来迭代，也就是返回了一个迭代器
+```js
+function* foo(index) {
+  while (index < 2) {
+    yield index++;
+  }
+}
+
+const iterator = foo(0);
+
+console.log(iterator.next().value);
+// expected output: 0
+
+console.log(iterator.next().value);
+// expected output: 1
+```
+
+
+## iterator的作用和for 循环一致，只不过写的方法也是next
+es6 实现迭代的方式是协议： 有两个与之相关的协议：
+可迭代协议(iteratable) 和迭代器协议（iterator）
+* [Symbol.iterator]
+A zero arguments function that returns an object, conforming to the [iterator protocol](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Iteration_protocols$edit#The_iterator_protocol) .
+* An object is an iterator when it implements a*next()*method with the following semantics:
+next的返回值是一个对象，并且该对象中的必须属性done和value满足下列条件
+	* done(boolean)
+		* Has the valuetrueif the iterator is past the end of the iterated sequence. In this casevalueoptionally specifies the return value of the iterator.
+		* Has the valuefalseif the iterator was able to produce the next value in the sequence. This is equivalent of not specifying thedoneproperty altogether.
+	* value- any JavaScript value returned by the iterator. Can be omitted whendoneistrue.
+	Thenextmethod always has to return an object with appropriate properties includingdoneandvalue. If a non
+
+
+2. 因为没有办法很好的区分一个对象是否是iterator,所以该对象拥有 [Symbol.iterator]属性能很明显的表明该对象是可迭代的
+3. 下面这种做法({ return this }).的优点是：
+	1. 本身是一个迭代器（实现了next），所以可以给别的需要实现该迭代方法的对象使用
+	2. 本身又能很快的判断出是可迭代的（ [Symbol.iterator]）
+```js
+var myIterator = {
+    next: function() {
+        // ...
+    },
+    [Symbol.iterator]: function() { return this }
+};
+```
+
+在文档中，被称作是 well-formed iterable方法
+迭代的方法有很多
+---
+
+可迭代和迭代器方法，都能实现迭代
+不过语言内置的一些方法，是根据可迭代方法来进行的，
+即[Symbol.iterator]
+
+所以区别 就出来了：
+* 如果你不想::影响内置类型::本身的迭代功能，就用迭代器方法，
+* 如果你就是修改…展开或者for of,，或者set类型，map类型的has方法的::默认行为::，那就去修改
+[Symbol.iterator] 
+---
+
+::generator和iterator的关系是：genertor是一个函数，返回值是一个iterator（对象）::
+---
