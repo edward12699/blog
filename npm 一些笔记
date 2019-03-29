@@ -1,0 +1,70 @@
+只是看npm文档的一点小想法，文档请参阅
+[npm](https://docs.npmjs.com/files/package.json)
+
+以下的东西基于个人理解，不保证正确，仅提供思路和
+
+## bundledDependencies§
+
+普通的Dependencies是需要在安装的时候，还是从远程下载的
+
+这个选项的话，就是直接把这些依赖打包进了module，
+
+好处是：这些bundle的依赖版本号不会改变，且不需再从远程拉取
+
+
+
+## package.lock.json
+看着就可以猜出意思的：
+
+ "_from": "@babel/core@^7.1.6",
+  "_id": "@babel/core@7.4.0",
+  
+  ### requreis和dependencies的区别：
+  在package.json中，只有dependencies，
+  事实上，也只有dependencies
+  而requreis是用来把安装在外层的依赖分离出去的
+  也就是，只有外层没有，或者外层安装的版本号不对应，才需要重新在我的内部重新安装dependencies，
+ 
+  但是，这并不是最终的结果
+  如果你requreis的和另一个包requreis相同的模块，但是版本号不同，那么只有最新的版本号才会被安装到最外层
+  而requreis旧的版本号的，类似于战争失败，虽然还是保留requreis字段，但是你还是得乖乖安装旧版本的模块到自己的node_modules中
+  
+  
+  ## node_module/.bin文件
+  有些模块提供命令行工具
+  但是只有被安装在全局的时候才会被添加进$PATH路径，
+  局部安装的模块保留了.bin文件的解析，把所有的package.json中有定义bin属性的包的启动放入了.bin文件
+  虽然你没法全局启动，但是可以局部启动啊
+  比如./node_modules/.bin/autoprefixer 
+  存放在这里面的都是symlinks
+  
+  ## yarn区别于npm的一些优势
+  
+  根据官方文档逐一来看吧 
+  1.  Offline Mode
+    指有cache，下过一次的版本，会直接读取cache，
+    这个不了解新的npm版是否有实现
+  2.  Network Performance  和  Network Resilience
+     都是指网络层下载的优化   并行下载以及某个包失败了并不会影响其他包的下载： npm怎么样，不清楚。。。。。
+  3.  Deterministic
+    不同机子和环境下载的时候都保证下载的依赖是相同的，不会有安装顺序的影响，（似乎还是在指yarn.lock的作用,npm.lock也已经实现（个人理解））
+  4. Flat Mode 
+    避免安装重复的包（好像还是在指yarn.lock，同上）
+  5. Same Packages
+    指安装的包和从npm安装的一样，这没啥
+    
+  
+  综上，如果345都不算优势的话，1和2都指的是包的安装效率会变高
+  这点，暂时没兴趣去调查高版本的
+ 不过看了下yarn.lock和packgae.lock，两者的数据整理方式是不同的
+ 并且yarn安装包的策略，父组件包版本并不是最新的，貌似是使用最多的？？
+ 剩余部分大同小异
+ 
+ 
+  
+  
+  
+  
+
+
+
