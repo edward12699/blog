@@ -25,7 +25,7 @@ only one way can go back --- reset
   3. 在推送tag的时候，推送的是标记的commit（本该如此）
   4. 如果是同名 branch和tag， 无法推送
   5. 结果你删了同名branch，推了tag
-  6. tag带着commitA,但是merge到其他分支的时候，commitA以及之后的commit 都不会被记录
+  6. tag带着commitA,但是::merge::到其他分支的时候，commitA以及之后的commit 都不会被记录
   
   
   
