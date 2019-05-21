@@ -10,22 +10,9 @@ only one way can go back --- reset
 2. when merging(including pulling), commits will check the commit time(which is according your local time), and order the commits based on the time 
 3. 发现一个tag可能的疑惑点（也可以称为bug？）
 
-  ### 案件还原
-  1. 分支打同名tag
-  2. 提交commit A
-  3. 删除同名 branch
-  4. push origin xxx(此时为tag)  此时 reomte tag的commit history包含A
-  5. pull origin 该tag
-  6. 发现没有commit A
+在同名
+
   
-  
-  ### 推测
-  1. tag打的时候，给当时的commit标记
-  2. 当前分支可以继续commit，此时由于同名，tag带上了该commit，
-  3. 在推送tag的时候，推送的是标记的commit（本该如此）
-  4. 如果是同名 branch和tag， 无法推送
-  5. 结果你删了同名branch，推了tag
-  6. tag带着commitA,但是::merge::到其他分支的时候，commitA以及之后的commit 都不会被记录
   
   
   
