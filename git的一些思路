@@ -10,8 +10,13 @@ only one way can go back --- reset
 2. when merging(including pulling), commits will check the commit time(which is according your local time), and order the commits based on the time 
 3. 发现一个tag可能的疑惑点（也可以称为bug？）
 
-在同名
-
+ 发现事实： 
+ 1. 在同名branch 和 tag 存在的时候，git pull origin xxx ，优先从branch拉
+ 2. 在gitlab展示同名branch 和 tag的时候，只能展示tag的log，无法展示branch的
+ 
+ 导致bug： 以为pull的是tag的，实际pull的是branch的,发现有个commit始终没有
+ 
+ 
   
   
   
