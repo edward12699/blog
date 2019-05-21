@@ -1,0 +1,12 @@
+## 以下均为一些事实基础和试验的推断
+
+git based on one princeple: ::commits can not be changed manually::
+
+so, file comparing depends on *comparing commits* only commit hashes, not others
+
+only one way can go back --- reset
+
+1. pushed remote files keeps the commits order with the local files, totally same
+2. when merging(including pulling), commits will check the commit time(which is according your local time), and order the commits based on the time 
+
+
